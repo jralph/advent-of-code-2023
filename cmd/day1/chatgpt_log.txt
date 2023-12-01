@@ -1,0 +1,53 @@
+The 1st answer was the following, which was wrong:
+
+```go
+package main
+
+import (
+	"fmt"
+	"io/ioutil"
+	"log"
+	"os"
+	"strconv"
+	"strings"
+)
+
+func extractCalibrationValue(line string) int {
+	firstDigit := string(line[0])
+	lastDigit := string(line[len(line)-1])
+
+	first, _ := strconv.Atoi(firstDigit)
+	last, _ := strconv.Atoi(lastDigit)
+
+	calibrationValue := first*10 + last
+	return calibrationValue
+}
+
+func main() {
+	if len(os.Args) != 2 {
+		fmt.Println("Usage: go run script.go input.txt")
+		return
+	}
+
+	filename := os.Args[1]
+
+	content, err := ioutil.ReadFile(filename)
+	if err != nil {
+		log.Fatal("Error reading file:", err)
+	}
+
+	lines := strings.Split(string(content), "\n")
+
+	totalSum := 0
+	for _, line := range lines {
+		if line != "" {
+			calibrationValue := extractCalibrationValue(line)
+			totalSum += calibrationValue
+		}
+	}
+
+	fmt.Println("Total Sum of Calibration Values:", totalSum)
+}
+```
+
+When called out, it apologised and gave the correct answer.
